@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled, {css, keyframes} from "styled-components";
 import {observer} from 'mobx-react-lite'
 import URLStore from "../store/URLStore"
-import { FaQrcode, FaLink, FaTrash, FaCopy } from "react-icons/fa6"
+import { FaQrcode, FaLink, FaTrash, FaCopy, FaLocationCrosshairs, FaCode } from "react-icons/fa6"
 
 interface ActiveItemType {
 	activeItem: boolean;
@@ -19,6 +19,7 @@ const ListItem = styled.ul<ActiveItemType>`
 	border-radius: 5px;
 
 	${props => props.activeItem && css`
+		border: 3px solid ${props => props.theme.colors.text};
 		transform: scale(1.1);
 		&::after{
 			content: '';
@@ -91,6 +92,10 @@ const TextCopy = styled.button`
 	background-color: transparent;
 	color: ${props => props.theme.colors.text};
 	
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 50%;
+
 	cursor: copy;
 
 	display: flex;
@@ -98,6 +103,10 @@ const TextCopy = styled.button`
 	justify-content: center;
 
 	font-size: 1.3em;
+	&:active {
+		color: lightgreen;
+		background-color:green;
+	}
 `
 
 const ItemBox = styled.div<ActiveItemType>`
@@ -121,6 +130,8 @@ const ItemBox = styled.div<ActiveItemType>`
 	background-color: ${props => props.theme.colors.secondary};
 	color: ${props => props.theme.colors.text};
 
+	flex-direction: column;
+
 	border-radius: 5px;
 
 	display: flex;
@@ -131,9 +142,11 @@ const ItemBox = styled.div<ActiveItemType>`
 	position: relative;
 `
 const ItemDelete = styled.button`
+	position: absolute;
 	right: 1rem;
-	width: 2em;
-	height: 2em;
+	bottom: 1rem;
+	width: 1.8em;
+	height: 1.8em;
 	border: none;
 
 	border-radius: 50%;
@@ -145,12 +158,95 @@ const ItemDelete = styled.button`
 	align-items: center;
 	justify-content: center;
 
-	font-size: 1.5em;
+	font-size: 1.2em;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+	&:hover {
+		background-color: ${props => props.theme.colors.active};
+		transform: scale(1.1);
+	}
 `
 const ItemDescr = styled.span`
+	background-color: ${props => props.theme.colors.primary};
+	padding-right: 0.8rem ;
+	border: 2px solid ${props => props.theme.colors.text};
 	
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.8rem;
+	
+	font-size: 1.2em;
+	.descr-icon {
+		height: 100%;
+		border-radius: 0;
+		padding: 0.2rem;
+		font-size: 2em;
+		background-color: ${props => props.theme.colors.text};
+		color: ${props => props.theme.colors.textblack};
+	}
 `
 const ItemCounter = styled.span`
+	background-color: ${props => props.theme.colors.primary};
+	border-radius: 5px;
+	padding-right: 0.8rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	gap: 0.8rem;
+	font-size: 1.8em;
+
+	border: 2px solid ${props => props.theme.colors.text};
+
+	user-select: none;
+	.count-icon {
+		height: 100%;
+		font-size: 1.2em;
+		padding: 0.4rem;
+		background-color: ${props => props.theme.colors.text};
+		color: ${props => props.theme.colors.textblack};
+	}
+`
+const CloseButton = styled.button`
+	position: absolute;
+	right: 1rem;
+	top: 1rem;
+	width: 2.5em;
+	height: 2.5em;
+	border: none;
+	background-color: transparent;
+	transition: all 0.3s ease-in-out;
+	border-radius: 50%;
+
+	cursor: pointer;
+
+	&::before{
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%) rotate(45deg);
+		height: 3px;
+		width: 80%;
+		background-color: ${props => props.theme.colors.text};
+	}
+	&::after{
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%) rotate(135deg);
+		height: 3px;
+		width: 80%;
+		background-color: ${props => props.theme.colors.text};
+	}
+
+	&:hover {
+		background-color: ${props => props.theme.colors.active};
+		transform: scale(1.1);
+	}
 `
 
 const URLItem: React.FC<{urlStore: URLStore}> = observer(( {urlStore} ) => {
@@ -159,8 +255,14 @@ const URLItem: React.FC<{urlStore: URLStore}> = observer(( {urlStore} ) => {
 
 	const handleActivator = (_id: string) => {
 		setActiveItem(_id === activeItem ? null : _id);
-		
 	}
+	const handleClose = () => {
+		setActiveItem(null)
+	}
+	const handleCopyTitle = (title: string, event: React.MouseEvent<HTMLButtonElement>) => {
+		event.stopPropagation(); // Предотвращаем всплытие события
+		navigator.clipboard.writeText(title)
+	};
 
 
 	useEffect(() => {
@@ -190,16 +292,18 @@ const URLItem: React.FC<{urlStore: URLStore}> = observer(( {urlStore} ) => {
 						<ItemTitle>
 							{url.shortUrl.toLowerCase()}
 						</ItemTitle>
-						<TextCopy><FaCopy /></TextCopy>
+						<TextCopy onClick={(e) => handleCopyTitle(url.shortUrl, e)}><FaCopy /></TextCopy>
 				</URLItemCard>
 			</ListItem>
 			{url._id === activeItem && (
 				<ItemBox activeItem={url._id === activeItem}>
 					<ItemDelete><FaTrash /></ItemDelete>
 					<ItemDescr>
+						<FaCode className='descr-icon'/>
 						{url.originalUrl.toLowerCase()}
 					</ItemDescr>
-					<ItemCounter>{url.clicks}</ItemCounter>
+					<ItemCounter><FaLocationCrosshairs className='count-icon'/>{url.clicks}</ItemCounter>
+					<CloseButton onClick={handleClose}></CloseButton>
 				</ItemBox>
 			)}
 			</>

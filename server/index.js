@@ -9,6 +9,7 @@ const dotenv = require('dotenv');
 
 const userRoute = require('./routes/userRoutes')
 const urlRoute = require('./routes/urlRoutes')
+const redirectRoute = require('./routes/redirectRoutes')
 
 dotenv.config();
 
@@ -20,12 +21,12 @@ app.use(cors({
     origin: process.env.CLIENT_URL
 }));
 
-
 app.use(express.json())
 app.use('/api', userRoute)
 app.use('/api', urlRoute)
+app.use('/t', redirectRoute)
 
-app.unsubscribe(errorMiddleware);
+app.use(errorMiddleware);
 
 const start = async() => {
     const PORT = process.env.PORT || 5000;

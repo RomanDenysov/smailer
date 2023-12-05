@@ -4,6 +4,7 @@ module.exports = class UrlDto {
     shortUrl;
     clicks;
     id;
+    code;
 
     constructor(model) {
         this.userId = model.username;
@@ -11,5 +12,6 @@ module.exports = class UrlDto {
         this.shortUrl = model.role;
         this.clicks = model.isActivated;
         this.id = model._id;
+        this.code = model.code
     }
 }
