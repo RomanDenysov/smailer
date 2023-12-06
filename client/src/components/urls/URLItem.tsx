@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled, {css, keyframes} from "styled-components";
 import {observer} from 'mobx-react-lite'
-import URLStore from "../store/URLStore"
-import { FaQrcode, FaLink, FaTrash, FaCopy, FaLocationCrosshairs, FaCode } from "react-icons/fa6"
+import URLStore from "@store/URLStore"
+import { FaLink, FaTrash, FaCopy, FaLocationCrosshairs, FaCode } from "react-icons/fa6"
 
 interface ActiveItemType {
 	activeItem: boolean;
@@ -39,6 +39,12 @@ const ListItem = styled.ul<ActiveItemType>`
 		`} 0.2s ease-in-out forwards;
 		}
 	`}
+	&:hover {
+		transform: scale(1.1);
+		border: 3px solid ${props => props.theme.colors.text};
+		z-index: 3;
+	}
+	z-index: 2;
 `
 const URLItemCard = styled.div<ActiveItemType>`
 	width: 100%;
@@ -57,15 +63,18 @@ const URLItemCard = styled.div<ActiveItemType>`
 
 	display: flex;
 	align-items: center;
-	justify-content: flex-start;
+	justify-content: center;
 	gap: 1rem;
 
 	transition: all 0.3s ease-in-out;
 `
 
 const ItemIcon = styled.div`
-	width: 2em;
-	height: 2em;
+	position: absolute;
+	top: 0.5rem;
+	left: 0.3rem;
+	width: 1.3em;
+	height: 1.3em;
 
 	border-radius: 50%;
 
@@ -76,7 +85,7 @@ const ItemIcon = styled.div`
 	align-items: center;
 	justify-content: center;
 
-	font-size: 1.5em;
+	font-size: 1.2em;
 `
 const ItemTitle = styled.h3`
 	font-size: 1em;
@@ -263,18 +272,25 @@ const URLItem: React.FC<{urlStore: URLStore}> = observer(( {urlStore} ) => {
 		event.stopPropagation(); // Предотвращаем всплытие события
 		navigator.clipboard.writeText(title)
 	};
+	const handleDelete = async (id: string) => {
+		try {
+		  await urlStore.deleteURL(id);
+
+		  urlStore.setURLs(urlStore.urls.filter(url => url._id !== id));
+		} catch (error) {
+		  console.error('Error deleting URL:', error);
+
+		}
+	  };
 
 
 	useEffect(() => {
-	  // Component is mounted, set the flag to true
 	  setIsMounted(true);
   
-	  // Make the request only when the component is mounted
 	  if (isMounted) {
 		urlStore.getURLs();
 	  }
   
-	  // Clean-up: set the flag to false when the component is unmounted
 	  return () => setIsMounted(false);
 	}, [urlStore, isMounted]);
 
@@ -297,7 +313,7 @@ const URLItem: React.FC<{urlStore: URLStore}> = observer(( {urlStore} ) => {
 			</ListItem>
 			{url._id === activeItem && (
 				<ItemBox activeItem={url._id === activeItem}>
-					<ItemDelete><FaTrash /></ItemDelete>
+					<ItemDelete onClick={() => handleDelete(url._id)}><FaTrash /></ItemDelete>
 					<ItemDescr>
 						<FaCode className='descr-icon'/>
 						{url.originalUrl.toLowerCase()}

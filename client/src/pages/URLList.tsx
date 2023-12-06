@@ -1,10 +1,10 @@
 import styled, {css, keyframes} from "styled-components"
 import { FaPlus, FaArrowLeft } from "react-icons/fa6"
 import React, { useMemo, useState } from "react"
-import URLInput from "@modules/url/components/URLInput"
+import URLInput from "@urls/URLInput"
 import {observer} from 'mobx-react-lite'
-import URLItem from "./URLItem"
-import URLStore from "../store/URLStore"
+import URLItem from "@urls/URLItem"
+import URLStore from "@store/URLStore"
 
 const ListContainer = styled.div`
     width: 100%;
@@ -42,16 +42,17 @@ const ListBox = styled.ul`
     flex-flow: row wrap;
     gap: 0.5rem;
 `
-const ButtonBox = styled.div<PlusButtonProps>`
-    height: 100%;
+const ButtonBox = styled.div`
+    height: 6rem;
     width: 100%;
 
     margin: auto;
 
     display: flex;
     align-items: center;
-    justify-content: ${props=>props.isOpen ? "space-between" : 'flex-end'};
+    justify-content: center;
 
+    position: relative;
 
     transition: all 0.5s ease-in-out;
 `
@@ -67,7 +68,9 @@ const InputAnimationBox = styled.div`
   `} 0.3s ease-in-out forwards;
 `
 const PlusButton = styled.button<PlusButtonProps>`
-    align-self: flex-end;
+    position: absolute;
+    top: 0;
+    right: 0;
     width: 6rem;
     height: 6rem;
     ${props => props.isOpen && css`
@@ -112,7 +115,7 @@ const URLList: React.FC = () => {
                 <ListBox>
                     <URLItem urlStore={urlStore} />
                 </ListBox>
-                <ButtonBox isOpen={isOpen}>
+                <ButtonBox>
                     {isOpen && 
                         <InputAnimationBox>
                             <URLInput/>

@@ -24,11 +24,18 @@
     /* Aliases for absolute paths */
     "baseUrl": "src",
     "paths": {
-      "@modules/*": ["modules/*"],
-      "@global/*": ["modules/global/*"],
-      "@common/*": ["modules/common/*"],
-      "@dashboard/*": ["modules/dashboard/*"],
-      "@details/*": ["modules/details/*"]
+      "@assets/*": ["assets/*"],
+      "@styles/*": ["assets/styles/*"],
+      "@components/*": ["components/*"],
+      "@common/*": ["components/common/*"],
+      "@dashboard/*": ["components/dashboard/*"],
+      "@auth/*": ["components/auth/*"],
+      "@urls/*": ["components/urls/*"],
+      "@models/*": ["models/*"],
+      "@pages/*": ["pages/*"],
+      "@providers/*": ["providers/*"],
+      "@services/*": ["services/*"],
+      "@store/*": ["store/*"],
       // Добавьте другие алиасы по необходимости
     }
   },

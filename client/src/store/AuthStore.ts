@@ -1,10 +1,10 @@
-import { IUser } from "@modules/models/IUser";
-import AuthService from "@modules/service/AuthService";
+import { IUser } from "@models/IUser";
+import AuthService from "@services/AuthService";
 import {makeAutoObservable} from 'mobx'
 
 import axios from 'axios'
-import { AuthResponse } from "@modules/models/response/AuthResponse";
-import { API_URL } from "@modules/http";
+import { AuthResponse } from "@models/response/AuthResponse";
+import { API_URL } from "@services/http";
 
 export default class AuthStore {
     user = {} as IUser;

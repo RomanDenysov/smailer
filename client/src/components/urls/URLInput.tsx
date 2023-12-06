@@ -1,7 +1,7 @@
 import React, { useRef } from "react"
 import styled from "styled-components"
 import { FaQrcode, FaLink, FaPaste  } from "react-icons/fa6"
-import URLStore from "../store/URLStore"
+import URLStore from "@store/URLStore"
 
 
 const InputForm = styled.form`
@@ -74,9 +74,14 @@ const URLButton = styled.button`
     align-items: center;
     justify-content: center;
 
-    transition: all 0.5s ease;
+    transition: all 0.3s ease;
 
     cursor: pointer;
+
+    &:hover {
+        transform: scale(0.9);
+        opacity: 0.9;
+    }
 `
 
 

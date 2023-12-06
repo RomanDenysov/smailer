@@ -1,6 +1,6 @@
-import { makeAutoObservable } from 'mobx';
-import { IUrl } from "@modules/models/IUrl";
-import UrlService from '@modules/service/UrlService';
+import { makeAutoObservable, runInAction } from 'mobx';
+import { IUrl } from "@models/IUrl";
+import UrlService from '@services/UrlService';
 
 export default class URLStore {
     urls: IUrl[] = [];
@@ -26,7 +26,9 @@ export default class URLStore {
         try {
             const response = await UrlService.getURLs();
             console.log(response.data)
-            this.setURLs(response.data);
+            runInAction(()=> {
+                this.setURLs(response.data);
+            })
         } catch (err: any) {
             console.log(err.response?.data?.message);
         }

@@ -1,5 +1,5 @@
-import $api from '@modules/http'
-import { AuthResponse } from '@modules/models/response/AuthResponse'
+import $api from '@services/http'
+import { AuthResponse } from '@models/response/AuthResponse'
 import {AxiosResponse} from 'axios'
 
 export default class AuthService {

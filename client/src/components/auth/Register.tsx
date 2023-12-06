@@ -2,7 +2,9 @@ import { ChangeEvent, FormEvent, useContext, useState } from "react"
 import styled from "styled-components"
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { observer } from "mobx-react-lite";
-import { Context } from "../../../App";
+import { Context } from "../../App";
+
+
 
 const SignContainer = styled.div`
     height: 90vh;
@@ -65,22 +67,12 @@ const Input = styled.input`
 const SignDescr = styled.span`
     color: ${props => props.theme.colors.textblack};
 
-    align-self: center;
-    text-align: center;
+    font-size: clamp(0.8rem, 2.5vw, 2rem);
 
-    font-size: clamp(1rem, 2.5vw, 2rem);
-
-    margin-bottom: 1rem;
-
-`
-const NavLink = styled(Link)`
-    color: ${props => props.theme.colors.textblack};
-    text-decoration: underline;
-    text-align: center;
-
-    font-size: clamp(1rem, 2.5vw, 2rem);
+    margin-bottom: 2rem;
 
     align-self: center;
+    text-align: center;
 `
 const Submit = styled.button`
     align-self: center;
@@ -98,46 +90,71 @@ const Submit = styled.button`
 	font-size: 1.2rem;
 	font-weight: 600;
 
-    margin: 2rem 0;
-
+    margin-top: 2rem;
+    
 
     &:focus {
 		outline: none;
 	}
 `
+const NavLink = styled(Link)`
+    color: ${props => props.theme.colors.textblack};
+    text-decoration: underline;
+    text-align: center;
 
-interface FormDataProps {
+    margin-top: 2rem;
+
+    font-size: clamp(0.8rem, 2.5vw, 1.4rem);
+
+    align-self: center;
+`
+
+interface FormData {
+    username: string;
     email: string;
     password: string;
 }
 
-const LoginForm: React.FC = () => {
-    const [formData, setFormData] = useState<FormDataProps>({
+const SignForm: React.FC = () => {
+    const [formData, setFormData] = useState<FormData>({
+        username: '',
         email: '',
         password: '',
     });
+
     const navigate = useNavigate();
     const location = useLocation();
     const {store} = useContext(Context);
 
     const fromPage = location.state?.from?.pathname || '/';
-    
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }))
     }
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        store.login(formData.email, formData.password);
+        store.registration(formData.username, formData.email, formData.password);
         navigate(fromPage, {replace: true})
     }
 
   return (
     <SignContainer>
         <SignTitle>
-            Log in to your account
+            Create Your Account
         </SignTitle>
         <Form onSubmit={handleSubmit}>
+            <Label htmlFor="username">
+                Username:
+            </Label>
+            <Input 
+                placeholder='Username'
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                required/>
             <Label htmlFor="email">
                 Email:
             </Label>
@@ -160,16 +177,15 @@ const LoginForm: React.FC = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required/>
-            <NavLink to='/forgot'>Forgot password?</NavLink>
-            <Submit onClick={handleSubmit}>Log in</Submit>
             <SignDescr>
-                Don't have an account?
-                <NavLink to='/register'>Sign Up</NavLink>
+                By creating an account, I consent to the processing of my personal data in accordance with the <b>PRIVACY LEGACY</b>
             </SignDescr>
+            <Submit onClick={handleSubmit}>Create account</Submit>
+            <NavLink to='/login'>If you already have an account?</NavLink>
         </Form>
     
     </SignContainer>
   )
 }
 
-export default observer(LoginForm)
+export default observer(SignForm)

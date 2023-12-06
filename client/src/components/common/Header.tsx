@@ -4,7 +4,7 @@ import { FaArrowRightToBracket, FaBoltLightning } from "react-icons/fa6"
 
 
 import { Link, Outlet } from 'react-router-dom'
-import Logo from "@common/components/Logo"
+import Logo from "@styles/Logo"
 
 const HeaderContainer = styled.div`
 	height: 8vh;

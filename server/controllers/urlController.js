@@ -30,15 +30,17 @@ class UrlController {
     }
 
     async removeUrl(req, res, next) {
-        const shortUrl = req.params.shortUrl;
+        const {id} = req.params;
+        console.log(id)
         
         try {
-            const result = await UrlService.removeUrl(shortUrl);
+            const result = await UrlService.removeUrl(id);
             if (result.deletedCount > 0) {
-                return res.json({ message: `Ссылка ${shortUrl} успешно удалена` });
+                return res.json({ message: `Ссылка ${id} успешно удалена` });
             } else {
-                return next(ApiError.BadRequest( `Ссылка ${shortUrl} успешно удалена`, errors.array() ));
+                return next(ApiError.BadRequest( `Ссылка ${id} успешно удалена`, errors.array() ));
             }
+            
         } catch (err) {
             console.log(`Ошибка при удалении ссылки: ${err} `)
             next(err)

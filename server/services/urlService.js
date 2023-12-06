@@ -14,8 +14,13 @@ class UrlService {
         }
     }
 
-    async removeUrl(shortUrl) {
-        const url = await ShortUrl.deleteOne({ shortUrl });
+    async removeUrl(id) {
+        const url = await ShortUrl.findByIdAndDelete(id);
+        if (url) {
+            console.log(`Сервис для удаления ссылки, обрабатываем: ${url}`);
+        } else {
+            console.log(`Ссылка с id ${id} не найдена`);
+        }
         return url;
     }
 

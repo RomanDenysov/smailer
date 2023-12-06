@@ -1,18 +1,18 @@
 import {
 	Route, RouterProvider, Navigate, createBrowserRouter, createRoutesFromElements
 } from 'react-router-dom'
-import GlobalStyles from '@modules/styles/GlobalStyles'; // Импорт глобальных стилей, можно и в App.tsx
-import Theme from '@modules/styles/Theme'
+import GlobalStyles from '@styles/GlobalStyles'; // Импорт глобальных стилей, можно и в App.tsx
+import Theme from '@styles/Theme'
 import { ThemeProvider } from 'styled-components'
-import Header from '@common/components/Header';
-import URLList from '@modules/url/components/URLList';
-import Login from '@modules/authorization/components/Login';
-import RequireAuth from '@modules/hoc/RequireAuth';
-import AuthStore from '@modules/authorization/store/AuthStore';
+import Header from '@common/Header';
+import URLList from '@pages/URLList';
+import Login from '@auth/Login';
+import RequireAuth from '@providers/RequireAuth';
+import AuthStore from '@store/AuthStore';
 import { createContext, useContext, useEffect } from 'react';
-import ForgotPassword from '@modules/authorization/components/ForgotPassword';
-import Register from '@modules/authorization/components/Register';
-import InfoPage from '@modules/authorization/components/Info';
+import ForgotPassword from '@auth/ForgotPassword';
+import Register from '@auth/Register';
+import InfoPage from '@pages/Info';
 import { observer } from "mobx-react-lite";
 
 interface State {

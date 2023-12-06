@@ -1,5 +1,5 @@
-import $api from '@modules/http'
-import { IUrl } from '@modules/models/IUrl'
+import $api from '@services/http'
+import { IUrl } from '@models/IUrl'
 import {AxiosResponse} from 'axios'
 
 export default class UrlService {
