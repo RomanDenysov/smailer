@@ -1,275 +1,162 @@
 import React, { useEffect, useState } from "react";
-import styled, {css, keyframes} from "styled-components";
+import styled from "styled-components";
 import {observer} from 'mobx-react-lite'
 import URLStore from "@store/URLStore"
-import { FaLink, FaTrash, FaCopy, FaLocationCrosshairs, FaCode } from "react-icons/fa6"
+import { FaLink, FaTrash, FaCopy, FaRocket } from "react-icons/fa6"
 
-interface ActiveItemType {
-	activeItem: boolean;
-}
 
-const ListItem = styled.ul<ActiveItemType>`
-	width: calc((100% / 2) - 0.34rem);
-	height: 6rem;
-		background-color: ${props => props.theme.colors.yellow};
+
+const ListItem = styled.ul`
+	width: calc((100% / 2) - 0.75rem);
+	height: fit-content;
+	border: 2px solid ${props => props.theme.colors.dark};
+	border-radius: 5px;
+	box-shadow: 3px 3px 2px rgba(0,0,0,0.6);
+	transition: all 0.3s ease-in-out;
+	&:hover {
+		transform: scale(1.01);
+	}
+	z-index: 1;
+
+	background-color: ${props => props.theme.colors.yellow};
+
 	&:nth-child(2n) {
 		background-color: ${props => props.theme.colors.blue};
 	}
 	&:nth-child(3n) {
 		background-color: ${props => props.theme.colors.pink};
 	}
-	transition: all 0.3s ease-in-out;
-	border-radius: 5px;
-	${props => props.activeItem && css`
-		border: 3px solid ${props => props.theme.colors.text};
-		transform: scale(1.1);
-		&::after{
-			content: '';
-			opacity: 0;
-			position: absolute;
-			left: 50%;
-			transform: translateX(-50%);
-			bottom: -1.6rem;
-			border: 1.5rem solid transparent;
-			border-bottom: 1.5rem solid ${props => props.theme.colors.secondary};
-			transform: translateY(-1rem);
-			animation: ${keyframes`
-			to {
-			opacity: 1;
-			transform: translateY(0);
-			}
-		`} 0.2s ease-in-out forwards;
-		}
-	`}
-	&:hover {
-		transform: scale(1.1);
-		border: 3px solid ${props => props.theme.colors.text};
-		z-index: 3;
-	}
-	z-index: 2;
+	
 `
-const URLItemCard = styled.div<ActiveItemType>`
+const ItemCard = styled.div`
 	width: 100%;
 	height: 100%;
-	
 	padding: 1rem;
-
 	position: relative;
-
 	cursor: pointer;
-
 	font-size: 1em;
-
-	${props => props.activeItem && css`
-	`}
-
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 1rem;
+	flex-direction: column;
 
+	gap: 1rem;
 	transition: all 0.3s ease-in-out;
 `
-
 const ItemIcon = styled.div`
 	position: absolute;
-	top: 0.5rem;
-	left: 0.3rem;
-	width: 1.3em;
-	height: 1.3em;
-
+	top: -1rem;
+	right: 0.5rem;
+	width: 2em;
+	height:2em;
+	border: 2px solid ${props => props.theme.colors.dark};
 	border-radius: 50%;
-
-	background-color: ${props => props.theme.colors.text};
+	background-color: ${props => props.theme.colors.background};
 	color: ${props => props.theme.colors.textblack};
-
 	display: flex;
 	align-items: center;
 	justify-content: center;
-
 	font-size: 1.2em;
 `
 const ItemTitle = styled.h3`
-	font-size: 1em;
+	font-size: 1.2em;
 	font-weight: 600;
 	line-height: 100%;
 	letter-spacing: -0.01rem;
-`
-const TextCopy = styled.button`
-	position: absolute;
-	top: 0.3em;
-	right: 0.25em;
-	border: none;
-	background-color: transparent;
-	color: ${props => props.theme.colors.text};
-	
-	width: 1.5em;
-	height: 1.5em;
-	border-radius: 50%;
-
-	cursor: copy;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	font-size: 1.3em;
-	&:active {
-		color: lightgreen;
-		background-color:green;
-	}
-`
-
-const ItemBox = styled.div<ActiveItemType>`
-	opacity: 0;
-	z-index: 2;
-
-	transition: all 0.3 ease-in-out;
-
-	${props => props.activeItem && css`
-		margin-top: 1rem;
-		width: 100%;
-		height: 12rem;
-    	transform: translateY(-20px);
-    	animation: ${keyframes`
-    	to {
-		opacity: 1;
-		transform: translateY(0);
-		}
-  `		} 0.3s ease-in-out forwards;
-	`}
-	background-color: ${props => props.theme.colors.secondary};
-	color: ${props => props.theme.colors.text};
-
-	flex-direction: column;
-
+	background-color: ${props => props.theme.colors.background};
+	padding: 0.4rem;
+	border: 2px solid ${props => props.theme.colors.dark};
 	border-radius: 5px;
 
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 1rem;
-
-	position: relative;
+	gap: 0.4rem;
 `
-const ItemDelete = styled.button`
-	position: absolute;
-	right: 1rem;
-	bottom: 1rem;
-	width: 1.8em;
-	height: 1.8em;
-	border: none;
-
-	border-radius: 50%;
-
-	background-color: ${props => props.theme.colors.text};
-	color: ${props => props.theme.colors.textblack};
-
+const ItemBox = styled.div`
+	width: 100%;
 	display: flex;
+	justify-content: space-between;
 	align-items: center;
-	justify-content: center;
-
-	font-size: 1.2em;
-	cursor: pointer;
-	transition: all 0.3s ease-in-out;
-	&:hover {
-		background-color: ${props => props.theme.colors.active};
-		transform: scale(1.1);
-	}
 `
 const ItemDescr = styled.span`
-	background-color: ${props => props.theme.colors.primary};
-	padding-right: 0.8rem ;
-	border: 2px solid ${props => props.theme.colors.text};
-	
+	border: 2px solid ${props => props.theme.colors.dark};
+	width: 100%;
+	height: 2.4rem;
 	border-radius: 5px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 0.8rem;
-	
-	font-size: 1.2em;
-	.descr-icon {
-		height: 100%;
-		border-radius: 0;
-		padding: 0.2rem;
-		font-size: 2em;
-		background-color: ${props => props.theme.colors.text};
-		color: ${props => props.theme.colors.textblack};
-	}
-`
-const ItemCounter = styled.span`
-	background-color: ${props => props.theme.colors.primary};
-	border-radius: 5px;
-	padding-right: 0.8rem;
+	position: relative;
+	white-space: nowrap; /* Запрещаем перенос строк */
+	text-overflow: ellipsis;
+
 	display: flex;
 	align-items: center;
 	justify-content: center;
-
-	gap: 0.8rem;
-	font-size: 1.8em;
-
-	border: 2px solid ${props => props.theme.colors.text};
-
-	user-select: none;
-	.count-icon {
-		height: 100%;
-		font-size: 1.2em;
-		padding: 0.4rem;
-		background-color: ${props => props.theme.colors.text};
-		color: ${props => props.theme.colors.textblack};
-	}
+	padding: 0.5rem;
+	font-size: 1em;
+	line-height: 100%;
+	letter-spacing: -0.04rem;
 `
-const CloseButton = styled.button`
-	position: absolute;
-	right: 1rem;
-	top: 1rem;
-	width: 2.5em;
-	height: 2.5em;
-	border: none;
-	background-color: transparent;
+const ItemButton = styled.button`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: .2rem;
+	font-weight: 600;
+	font-size: 1em;
+	letter-spacing: -0.09rem;
+	line-height: 100%;
+	border-radius: 5px;
+	padding: 0.4rem;
+	color: ${props => props.theme.colors.dark};
+	background-color:  ${props => props.theme.colors.secondary};
+	box-shadow: 3px 3px 3px rgba(0,0,0,0.4);
 	transition: all 0.3s ease-in-out;
-	border-radius: 50%;
-
-	cursor: pointer;
-
-	&::before{
-		content: '';
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%) rotate(45deg);
-		height: 3px;
-		width: 80%;
-		background-color: ${props => props.theme.colors.text};
+	&:nth-child(1n) {
+		&:hover{
+			transform: scale(1.05);
+		}
+		&:hover .icon{
+			color: green;
+		}
+		&:active {
+			transform: scale(0.95);
+		}
 	}
-	&::after{
-		content: '';
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%) rotate(135deg);
-		height: 3px;
-		width: 80%;
-		background-color: ${props => props.theme.colors.text};
+	&:nth-child(2n) {
+		&:hover{
+			transform: scale(1);
+		}
+		&:hover .icon{
+			color: ${props => props.theme.colors.active};
+		}
+		&:active {
+			transform: scale(1);
+		}
+		&:focus {
+			outline: none;
+		}
 	}
-
-	&:hover {
-		background-color: ${props => props.theme.colors.active};
-		transform: scale(1.1);
+	&:nth-child(3n) {
+		&:hover{
+			transform: scale(1.05);
+		}
+		&:hover .icon{
+			color: ${props => props.theme.colors.active};
+		}
+		&:active {
+			transform: scale(0.95);
+		}
+	}
+	
+	
+	span {
+		font-size: 1.2em;
 	}
 `
 
 const URLItem: React.FC<{urlStore: URLStore}> = observer(( {urlStore} ) => {
 	const [isMounted, setIsMounted] = useState(false);
-	const [activeItem, setActiveItem] = useState<string | null>(null);
 
-	const handleActivator = (_id: string) => {
-		setActiveItem(_id === activeItem ? null : _id);
-	}
-	const handleClose = () => {
-		setActiveItem(null)
-	}
 	const handleCopyTitle = (title: string, event: React.MouseEvent<HTMLButtonElement>) => {
 		event.stopPropagation(); // Предотвращаем всплытие события
 		navigator.clipboard.writeText(title)
@@ -283,7 +170,7 @@ const URLItem: React.FC<{urlStore: URLStore}> = observer(( {urlStore} ) => {
 		  console.error('Error deleting URL:', error);
 
 		}
-	  };
+	};
 
 
 	useEffect(() => {
@@ -302,29 +189,19 @@ const URLItem: React.FC<{urlStore: URLStore}> = observer(( {urlStore} ) => {
 	return (
 		<>
 		{urlStore.urls.map((url) => (
-			<>
-			<ListItem activeItem={url._id === activeItem} key={url._id}>
-				<URLItemCard activeItem={url._id === activeItem} onClick={() => handleActivator(url._id)}>
-        			{/* <ItemIcon><FaQrcode /></ItemIcon> */}
+			<ListItem key={url._id}>
+				<ItemCard>
+						{/* <ItemIcon><FaQrcode /></ItemIcon> */}
 						<ItemIcon><FaLink /></ItemIcon>
-						<ItemTitle>
-							{url.shortUrl.toLowerCase()}
-						</ItemTitle>
-						<TextCopy onClick={(e) => handleCopyTitle(url.shortUrl, e)}><FaCopy /></TextCopy>
-				</URLItemCard>
+						<ItemTitle><FaRocket />{url.shortUrl.toLowerCase()}</ItemTitle>
+						<ItemDescr>{url.originalUrl.toLowerCase()}</ItemDescr>
+						<ItemBox>
+							<ItemButton onClick={(e) => handleCopyTitle(url.shortUrl, e)}>copy<FaCopy className='icon'/></ItemButton>						
+							<ItemButton>clicks:<span>{url.clicks}</span></ItemButton>
+							<ItemButton onClick={() => handleDelete(url._id)}>delete<FaTrash className='icon'/></ItemButton>
+						</ItemBox>
+				</ItemCard>
 			</ListItem>
-			{url._id === activeItem && (
-				<ItemBox activeItem={url._id === activeItem}>
-					<ItemDelete onClick={() => handleDelete(url._id)}><FaTrash /></ItemDelete>
-					<ItemDescr>
-						<FaCode className='descr-icon'/>
-						{url.originalUrl.toLowerCase()}
-					</ItemDescr>
-					<ItemCounter><FaLocationCrosshairs className='count-icon'/>{url.clicks}</ItemCounter>
-					<CloseButton onClick={handleClose}></CloseButton>
-				</ItemBox>
-			)}
-			</>
 		))
 		}	
 		</>

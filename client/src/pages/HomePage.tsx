@@ -25,14 +25,14 @@ const ListWrapper = styled.div`
 `
 const ListBox = styled.ul`
     position: relative;
-    padding: 0.5rem;
+    padding: 1rem;
     margin: auto;
 
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-flow: row wrap;
-    gap: 0.5rem;
+    gap: 1.5rem;
 `
 const ButtonBox = styled.div<PlusButtonProps>`
     height: 6rem;
@@ -90,6 +90,8 @@ const PlusButton = styled.button<PlusButtonProps>`
     transition: all 0.5s ease-in-out;
     z-index: 1;
     cursor: pointer;
+
+    border: 2px solid ${props => props.theme.colors.dark};
 `
 
 

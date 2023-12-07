@@ -14,11 +14,11 @@ const InputForm = styled.form`
     gap: 0.8rem;
 `
 const InputBox = styled.div`
-    border-radius: 10px;
+    border-radius: 5px;
     position: relative;
     width: 24rem;
     height: 4rem;
-    box-shadow: 1px 4px 4px 2px rgba(0,0,0,0.4);
+    box-shadow: 3px 3px 2px rgba(0,0,0,0.4);
     z-index: 1;
 `
 const Input = styled.input`
@@ -28,6 +28,7 @@ const Input = styled.input`
     border-radius: 5px;
     padding: 0.8rem;
     font-size: 1.4rem;
+    border: 2px solid ${props => props.theme.colors.dark};
     &:focus {
         outline: none;
     }
@@ -61,7 +62,8 @@ const URLButton = styled.button`
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    box-shadow: 1px 4px 4px 2px rgba(0,0,0,0.4);
+    box-shadow: 4px 4px 2px rgba(0,0,0,0.4);
+    border: 2px solid ${props => props.theme.colors.dark};
     cursor: pointer;
     z-index: 1;
     &:hover {

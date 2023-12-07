@@ -53,6 +53,7 @@ const InfoButton = styled(Link)<InfoButtonProps>`
 	`}
 	${props => props.outlined && css`
 	background-color: ${props => props.theme.colors.background};
+	border: 2px solid ${props => props.theme.colors.dark};
 	color: ${props => props.theme.colors.primary};
 	`}
 	

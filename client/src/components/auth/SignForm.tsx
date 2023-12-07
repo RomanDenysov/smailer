@@ -112,6 +112,8 @@ const Submit = styled.button`
 	&:hover {
 		transform: scale(1.1)
 	}
+
+    border: 2px solid ${props => props.theme.colors.dark};
 `
 
 interface FormDataProps {
