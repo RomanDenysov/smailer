@@ -6,7 +6,6 @@ import { observer } from "mobx-react-lite"
 
 const InfoContainer = styled.div`
 	min-height: 100vh;
-	
 	max-width: 1366px;
 
 	margin: auto;

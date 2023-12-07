@@ -9,15 +9,17 @@ interface ActiveItemType {
 }
 
 const ListItem = styled.ul<ActiveItemType>`
-	width: calc((100% / 3) - 0.34rem);
+	width: calc((100% / 2) - 0.34rem);
 	height: 6rem;
-
-	background-color: ${props => props.theme.colors.secondary};
-
+		background-color: ${props => props.theme.colors.yellow};
+	&:nth-child(2n) {
+		background-color: ${props => props.theme.colors.blue};
+	}
+	&:nth-child(3n) {
+		background-color: ${props => props.theme.colors.pink};
+	}
 	transition: all 0.3s ease-in-out;
-
 	border-radius: 5px;
-
 	${props => props.activeItem && css`
 		border: 3px solid ${props => props.theme.colors.text};
 		transform: scale(1.1);

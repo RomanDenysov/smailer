@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useState } from "react"
 import styled from "styled-components"
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { observer } from "mobx-react-lite";
-import { useAuth } from "@providers/AuthContext";
+import { useAuth } from "@providers/AuthProviders/AuthContext";
 
 const SignContainer = styled.div`
     min-height: 100vh;

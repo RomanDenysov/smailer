@@ -11,26 +11,23 @@ const InputForm = styled.form`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5rem;
+    gap: 0.8rem;
 `
 const InputBox = styled.div`
-    
+    border-radius: 10px;
     position: relative;
     width: 24rem;
     height: 4rem;
+    box-shadow: 1px 4px 4px 2px rgba(0,0,0,0.4);
+    z-index: 1;
 `
 const Input = styled.input`
     height: 4rem;
-
     width: 24rem;
-
     border: 2px solid ${props => props.theme.colors.secondary};
     border-radius: 5px;
-
     padding: 0.8rem;
-
     font-size: 1.4rem;
-
     &:focus {
         outline: none;
     }
@@ -41,46 +38,38 @@ const Input = styled.input`
 const InputButton = styled.button`
     height: 4rem;
     width: 4rem;
-
     background-color: transparent;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: 1.6rem;
-
     border: none;
-
     position: absolute;
     top: 0;
     right: 0;
-
     cursor: alias;
-    
 `
 const URLButton = styled.button`
     width: 4rem;
     height: 4rem;
-
     border: none;
     border-radius: 50%;
-    
     background-color: ${props => props.theme.colors.secondary};
-    color: ${props => props.theme.colors.text};
-
+    color: ${props => props.theme.colors.primary};
     font-size: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-
     transition: all 0.3s ease;
-
+    box-shadow: 1px 4px 4px 2px rgba(0,0,0,0.4);
     cursor: pointer;
-
+    z-index: 1;
     &:hover {
-        transform: scale(0.9);
         opacity: 0.9;
+        background-color: ${props => props.theme.colors.active};
+    }
+    &:active {
+        transform: scale(0.9);
     }
 `
 
@@ -106,7 +95,6 @@ const URLInput: React.FC = () => {
             }
         } catch (err) {
             console.log(`Ошибка во время создания ссылки на клиенте: ${err}`)
-            
         }
     }
 

@@ -7,7 +7,7 @@ import { FaArrowRightToBracket, FaBoltLightning } from "react-icons/fa6"
 import { Link, Outlet, useNavigate } from 'react-router-dom'
 import Logo from "@assets/icons/Logo"
 import { observer } from "mobx-react-lite"
-import { useAuth } from "@providers/AuthContext"
+import { useAuth } from "@providers/AuthProviders/AuthContext"
 
 const HeaderContainer = styled.div`
 	height: 10vh;
@@ -57,7 +57,7 @@ const NavLink = styled(Link)`
 
 	font-weight: 600;
 	font-size: 1em;
-	letter-spacing: -0.01rem;
+	letter-spacing: -0.09rem;
 	line-height: 100%;
 
 
