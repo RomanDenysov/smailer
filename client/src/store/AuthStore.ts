@@ -18,7 +18,7 @@ export default class AuthStore {
         this.user = user;
     }
 
-    setAuth(bool: boolean){
+    setIsAuth(bool: boolean){
         this.isAuth = bool;
     }
 
@@ -27,7 +27,7 @@ export default class AuthStore {
             const response = await AuthService.login(email, password);
             localStorage.setItem('token', response.data.accessToken);
             // console.log(response);
-            this.setAuth(true);
+            this.setIsAuth(true);
             this.setUser(response.data.user)
         } catch (err: any) {
             console.log(err.response?.data?.message)
@@ -39,7 +39,7 @@ export default class AuthStore {
             const response = await AuthService.registration(username, email, password);
             localStorage.setItem('token', response.data.accessToken);
             // console.log(response);
-            this.setAuth(true);
+            this.setIsAuth(true);
             this.setUser(response.data.user)
         } catch (err: any) {
             console.log(err.response?.data?.message)
@@ -50,7 +50,7 @@ export default class AuthStore {
         try {
             const response = await AuthService.logout();
             localStorage.removeItem('token');
-            this.setAuth(false);
+            this.setIsAuth(false);
             this.setUser({} as IUser)
             return response;
         } catch (err: any) {
@@ -63,10 +63,13 @@ export default class AuthStore {
             const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, {withCredentials: true})
             localStorage.setItem('token', response.data.accessToken);
             // console.log(response);
-            this.setAuth(true);
+            this.setIsAuth(true);
             this.setUser(response.data.user)
         } catch (err: any) {
             console.log(err.response?.data?.message)
         }
     }
+    isLoggedIn() {
+        return this.isAuth;
+      }
 }

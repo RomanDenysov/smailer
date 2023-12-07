@@ -1,12 +1,19 @@
 const Theme = {
     colors: {
-      primary: '#3498db',
-      secondary: '#2980b9',
-      text: '#ecf0f1',
-      textblack: '#0d0d0d',
-      textwhite: '#f0f0f0',
-      button: '#e74c3c',
-      active: '#c0392b',
+      background: '#E4F0E2',
+      primary: '#222222',
+      secondary: '#DBD6CB',
+      active: '#FF4500',
+      contrast: '#667985 ',
+      
+      black: '#171717',
+      
+      dark: '#333333',
+      
+      white: '#f0f0f0',
+      yellow: '#F4F378 ',
+      pink: '#FEB3EF  ',
+      blue: '#9DDEF2  ',
     },
 
 

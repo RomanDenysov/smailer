@@ -10,7 +10,7 @@ const ListContainer = styled.div`
     width: 100%;
     min-height: 100vh;
 
-    background-color: ${props => props.theme.colors.text};
+    background-color: transparent;
     color: ${props => props.theme.colors.textwhite};
 `
 const ListWrapper = styled.div`

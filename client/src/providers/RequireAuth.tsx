@@ -1,19 +1,20 @@
-import { ReactElement } from 'react'
-import {useLocation, Navigate} from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 interface RequireAuthProps {
-    children: ReactElement;
+  children: React.ReactNode;
 }
 
-const RequireAuth: React.FC<RequireAuthProps> = ({children}) => {
-    const location = useLocation();
-    const auth = true;
+const RequireAuth: React.FC<RequireAuthProps> = ({ children }) => {
+  const { store } = useAuth();
+  const location = useLocation();
 
-    if(!auth) {
-        return <Navigate to='/login' state={{from: location}}/>
-    }
+  if (!store.isAuth) {
+    // Перенаправление на страницу входа, если пользователь не аутентифицирован
+    return <Navigate to="/info" state={{ from: location }} />;
+  }
 
-  return children;
-}
+  return <>{children}</>;
+};
 
-export default RequireAuth
+export default RequireAuth;
