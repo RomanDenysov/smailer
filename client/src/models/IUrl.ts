@@ -5,5 +5,6 @@ export interface IUrl {
     originalUrl: string;
     shortUrl: string;
     clicks: number;
+    code: string;
     _id: string;
 }

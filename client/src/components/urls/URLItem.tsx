@@ -47,8 +47,8 @@ const ItemIcon = styled.div`
 	position: absolute;
 	top: -1rem;
 	right: 0.5rem;
-	width: 2em;
-	height:2em;
+	width: 1.6em;
+	height:1.6em;;
 	border: 2px solid ${props => props.theme.colors.dark};
 	border-radius: 50%;
 	background-color: ${props => props.theme.colors.background};
@@ -59,6 +59,10 @@ const ItemIcon = styled.div`
 	font-size: 1.2em;
 `
 const ItemTitle = styled.h3`
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	font-size: 1.2em;
 	font-weight: 600;
 	line-height: 100%;
@@ -85,7 +89,8 @@ const ItemDescr = styled.span`
 	height: 2.4rem;
 	border-radius: 5px;
 	position: relative;
-	white-space: nowrap; /* Запрещаем перенос строк */
+	white-space: nowrap;
+	overflow: hidden;
 	text-overflow: ellipsis;
 
 	display: flex;
@@ -164,13 +169,12 @@ const URLItem: React.FC<{urlStore: URLStore}> = observer(( {urlStore} ) => {
 	const handleDelete = async (id: string) => {
 		try {
 		  await urlStore.deleteURL(id);
-
 		  urlStore.setURLs(urlStore.urls.filter(url => url._id !== id));
 		} catch (error) {
 		  console.error('Error deleting URL:', error);
-
 		}
 	};
+
 
 
 	useEffect(() => {

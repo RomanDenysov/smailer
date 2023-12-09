@@ -1,10 +1,10 @@
-import { IUser } from "@models/IUser";
-import AuthService from "@services/AuthService";
 import {makeAutoObservable} from 'mobx'
-
 import axios from 'axios'
-import { AuthResponse } from "@models/response/AuthResponse";
-import { API_URL } from "@services/http";
+
+import {API_URL} from "@services/http";
+import {IUser} from "@models/IUser";
+import {AuthResponse} from "@models/response/AuthResponse";
+import AuthService from "@services/AuthService";
 
 export default class AuthStore {
     user = {} as IUser;
@@ -69,7 +69,4 @@ export default class AuthStore {
             console.log(err.response?.data?.message)
         }
     }
-    isLoggedIn() {
-        return this.isAuth;
-      }
 }

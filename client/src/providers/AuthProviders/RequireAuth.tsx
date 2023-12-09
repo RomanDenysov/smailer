@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import Loading from '@assets/styles/Loading';
 
 interface RequireAuthProps {
   children: React.ReactNode;
@@ -27,7 +28,7 @@ const RequireAuth: React.FC<RequireAuthProps> = ({ children }) => {
 
   if (!authChecked) {
     // Пока проверяем аутентификацию, можно показать, например, спиннер
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return <>{children}</>;

@@ -31,8 +31,9 @@ class UrlService {
 
     async getAllUrl(userId) {
         const urls = await ShortUrl.find({ userId })
+        console.log(urls)
         if(urls.length === 0){
-            return null;
+            return console.log(`Данные о ссылках отсутствуют`);
         }
         console.log(urls)
         

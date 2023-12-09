@@ -1,8 +1,10 @@
-import { ChangeEvent, FormEvent, useState } from "react"
+import { ChangeEvent, FormEvent } from "react"
 import styled from "styled-components"
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { observer } from "mobx-react-lite";
 import { useAuth } from "@providers/AuthProviders/AuthContext";
+import useForm, { FormData }from '@store/FormStore';
+import useCusomNavigate from "@hooks/useCustomNavigate";
 
 const SignContainer = styled.div`
     min-height: 100vh;
@@ -116,11 +118,6 @@ const Submit = styled.button`
     border: 2px solid ${props => props.theme.colors.dark};
 `
 
-interface FormDataProps {
-    email?: string;
-    password?: string;
-    username?: string;
-}
 interface ValidProps {
     isValid?: boolean;
 }
@@ -129,60 +126,39 @@ interface SignFormProps {
 }
 
 const SignForm: React.FC<SignFormProps> = observer(({ type }) => {
-    const [formData, setFormData] = useState<FormDataProps>({
-        email: '',
-        password: '',
-        username: '',
-    });
-    const [isValid, setIsValid] = useState(false);
-
-    const navigate = useNavigate();
-    const location = useLocation();
     const { store } = useAuth();
-
-    const fromPage = location.state?.from?.pathname || '/';
+    const formStore = useForm()
+    const customNavigate = useCusomNavigate();
     
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }))
+        formStore.updateFormData(name as keyof FormData, value);
 
-        switch (name) {
-            case 'email':
-                setIsValid(value.includes('@') && value.includes('.'));
-                break;
-            case 'password':
-                setIsValid(value.length >= 4);
-                break;
-            case 'username':
-                setIsValid(value.length >= 2);
-                break;
-            default:
-                setIsValid(false);
-        }
+        formStore.validateField(name as keyof FormData)
     }
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        
-        if (isValid) {
-            switch (type) {
-                case 'login':
-                    await store.login(formData.email!, formData.password!);
-                    break;
-                case 'register':
-                    await store.registration(
-                        formData.username!,
-                        formData.email!,
-                        formData.password!,
-                    );
-                    break;
-                default:
-                    console.error('Invalid form type');
-            }
-            navigate(fromPage, { replace: true });
+        if (formStore.isValid) {
+          switch (type) {
+            case 'login':
+                store.login(formStore.formData.email, formStore.formData.password);
+                console.log(formStore.formData.email, formStore.formData.password)
+                break;
+            case 'register':
+                store.registration(
+                    formStore.formData.username!,
+                    formStore.formData.email,
+                    formStore.formData.password
+                );
+              break;
+            default:
+              console.error('Invalid form type');
+          }
+          customNavigate();
         } else {
-            console.error('Invalid data. Please check your inputs.');
+          console.error('Invalid data. Please check your inputs.');
         }
-    }
+      };
 
   return (
     <SignContainer>
@@ -200,10 +176,10 @@ const SignForm: React.FC<SignFormProps> = observer(({ type }) => {
                         type="text"
                         id="username"
                         name="username"
-                        value={formData.username}
+                        value={formStore.formData.username}
                         onChange={handleChange}
                         required
-                        isValid={isValid}/>
+                        isValid={formStore.isValid}/>
                 </>
             )}
             <Label htmlFor="email">
@@ -214,10 +190,10 @@ const SignForm: React.FC<SignFormProps> = observer(({ type }) => {
                 type="email"
                 id="email"
                 name="email"
-                value={formData.email}
+                value={formStore.formData.email}
                 onChange={handleChange}
                 required
-                isValid={isValid}/>
+                isValid={formStore.isValid}/>
             <Label htmlFor="password">
                 Password:
             </Label>
@@ -226,10 +202,10 @@ const SignForm: React.FC<SignFormProps> = observer(({ type }) => {
                 type="password"
                 id="password"
                 name="password"
-                value={formData.password}
+                value={formStore.formData.password}
                 onChange={handleChange}
                 required
-                isValid={isValid}/>
+                isValid={formStore.isValid}/>
             {type === 'login' && (
                 <NavLink to='/forgot'>Forgot password?</NavLink>
             )}

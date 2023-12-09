@@ -1,10 +1,13 @@
 import {
 	Route, createBrowserRouter, createRoutesFromElements
 } from 'react-router-dom'
-import Header from '@components/common/Header';
-import HomePage from '@pages/HomePage';
-import SignForm from '@components/auth/SignForm';
+
 import RequireAuth from '@providers/AuthProviders/RequireAuth';
+
+import Header from '@components/common/Header';
+import SignForm from '@components/auth/SignForm';
+
+import HomePage from '@pages/HomePage';
 import InfoPage from '@pages/InfoPage';
 
 export const router = createBrowserRouter(createRoutesFromElements(

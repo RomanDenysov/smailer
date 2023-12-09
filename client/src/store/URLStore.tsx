@@ -9,6 +9,7 @@ export default class URLStore {
         makeAutoObservable(this);
     }
 
+
     setURLs(urls: IUrl[]) {
         this.urls = urls;
     }
@@ -22,9 +23,9 @@ export default class URLStore {
         }
     }
 
-    async getURLs() {
+    async getURLs(urls: IUrl[]) {
         try {
-            const response = await UrlService.getURLs();
+            const response = await UrlService.getURLs(urls);
             console.log(response.data)
             runInAction(()=> {
                 this.setURLs(response.data);
@@ -33,7 +34,8 @@ export default class URLStore {
             console.log(err.response?.data?.message);
         }
     }
-        async deleteURL(id: string) {
+
+    async deleteURL(id: string) {
         try {
             await UrlService.deleteURL(id);
             // Handle deletion success as needed
